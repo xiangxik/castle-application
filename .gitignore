@@ -1,6 +1,15 @@
 # Compiled class file
 *.class
 
+.settings/
+.project
+/target/
+/src/main/webapp/upload
+.classpath
+*.iml
+.idea
+.DS_Store
+
 # Log file
 *.log
 
