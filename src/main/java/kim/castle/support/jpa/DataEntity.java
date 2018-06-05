@@ -1,4 +1,4 @@
-package kim.castle.support.data;
+package kim.castle.support.jpa;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

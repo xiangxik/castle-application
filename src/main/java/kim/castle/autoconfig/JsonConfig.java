@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import ch.mfrey.jackson.antpathfilter.AntPathFilterMixin;
 import kim.castle.support.data.Node;
 import kim.castle.support.data.Tree;
+import kim.castle.support.json.JpaModule;
 import kim.castle.support.json.NodeSerializer;
 import kim.castle.support.json.ObjectErrorSerializer;
 import kim.castle.support.json.PageSerializer;
@@ -27,6 +28,7 @@ public class JsonConfig {
 		ObjectMapper objectMapper = new ObjectMapper();
 
 		objectMapper.registerModule(simpleModule());
+		objectMapper.registerModule(jpaModule());
 
 		objectMapper.addMixIn(Persistable.class, AntPathFilterMixin.class);
 
@@ -44,5 +46,10 @@ public class JsonConfig {
 		simpleModule.addSerializer(Node.class, new NodeSerializer<>());
 		simpleModule.addSerializer(ObjectError.class, new ObjectErrorSerializer());
 		return simpleModule;
+	}
+
+	@Bean
+	public JpaModule jpaModule() {
+		return new JpaModule();
 	}
 }

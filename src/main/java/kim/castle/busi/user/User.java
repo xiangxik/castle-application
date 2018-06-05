@@ -2,13 +2,17 @@ package kim.castle.busi.user;
 
 import javax.persistence.Entity;
 
-import kim.castle.support.data.DataEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import kim.castle.support.jpa.DataEntity;
 
 @Entity
 public class User extends DataEntity<User, Long> {
 
 	private String name;
 	private String username;
+
+	@JsonIgnore
 	private String password;
 
 	public String getName() {
