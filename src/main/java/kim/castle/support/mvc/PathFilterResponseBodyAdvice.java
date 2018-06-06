@@ -1,4 +1,4 @@
-package kim.castle.support.json;
+package kim.castle.support.mvc;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,33 +19,43 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.common.base.Strings;
 
 import ch.mfrey.jackson.antpathfilter.AntPathPropertyFilter;
+import kim.castle.support.data.DataWrapper;
 import kim.castle.support.data.Tree;
+import kim.castle.support.json.PathFilter;
 
 @ControllerAdvice
 @Order(value = Ordered.LOWEST_PRECEDENCE)
-public class JsonResponseBodyAdvice extends AbstractMappingJacksonResponseBodyAdvice {
+public class PathFilterResponseBodyAdvice extends AbstractMappingJacksonResponseBodyAdvice {
 
 	@Override
-	protected void beforeBodyWriteInternal(MappingJacksonValue bodyContainer, MediaType contentType, MethodParameter returnType, ServerHttpRequest request,
-			ServerHttpResponse response) {
+	protected void beforeBodyWriteInternal(MappingJacksonValue bodyContainer, MediaType contentType,
+			MethodParameter returnType, ServerHttpRequest request, ServerHttpResponse response) {
+
 		Object value = bodyContainer.getValue();
+
+		if (returnType.getDeclaringClass().isAssignableFrom(DataWrapper.class)) {
+			bodyContainer.setValue(JsonResponseResult.success(value));
+			return;
+		}
 		if (value != null) {
 			HttpServletRequest httpRequest = ((ServletServerHttpRequest) request).getServletRequest();
 
 			// antpathfilter
 			FilterProvider filterProvider = null;
 
-			String pathFilter = returnType.hasMethodAnnotation(PathFilter.class) ? returnType.getMethodAnnotation(PathFilter.class).value()
+			String pathFilter = returnType.hasMethodAnnotation(PathFilter.class)
+					? returnType.getMethodAnnotation(PathFilter.class).value()
 					: httpRequest.getParameter("path_filter");
 			if (!Strings.isNullOrEmpty(pathFilter)) {
-				filterProvider = new SimpleFilterProvider().addFilter("antPathFilter", new AntPathPropertyFilter(pathFilter.split(",")));
+				filterProvider = new SimpleFilterProvider().addFilter("antPathFilter",
+						new AntPathPropertyFilter(pathFilter.split(",")));
 			} else {
 				if (value instanceof Tree) {
-					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter",
-							new AntPathPropertyFilter(new String[] { "*", "*.*", "*.*.id", "*.*.name", "*.*.title", "*.*.fullName" }));
+					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter", new AntPathPropertyFilter(
+							new String[] { "*", "*.*", "*.*.id", "*.*.name", "*.*.title", "*.*.fullName" }));
 				} else if (value instanceof Page) {
-					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter",
-							new AntPathPropertyFilter(new String[] { "*", "*.*", "*.*.id", "*.*.name", "*.*.title", "*.*.fullName" }));
+					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter", new AntPathPropertyFilter(
+							new String[] { "*", "*.*", "*.*.id", "*.*.name", "*.*.title", "*.*.fullName" }));
 				} else {
 					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter",
 							new AntPathPropertyFilter(new String[] { "*", "*.id", "*.name", "*.title", "*.fullName" }));

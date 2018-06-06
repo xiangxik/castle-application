@@ -9,6 +9,8 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 public class ClientTokenBasedRemeberMeServices extends PersistentTokenBasedRememberMeServices {
 
+	public static final String REMEMBER_TOKEN_ATTRIBUTE = "_rememberToken";
+
 	public ClientTokenBasedRemeberMeServices(String key, UserDetailsService userDetailsService,
 			PersistentTokenRepository tokenRepository) {
 		super(key, userDetailsService, tokenRepository);
@@ -24,6 +26,8 @@ public class ClientTokenBasedRemeberMeServices extends PersistentTokenBasedRemem
 	@Override
 	protected void setCookie(String[] tokens, int maxAge, HttpServletRequest request, HttpServletResponse response) {
 		// super.setCookie(tokens, maxAge, request, response);
+		String cookieValue = encodeCookie(tokens);
+		request.setAttribute(REMEMBER_TOKEN_ATTRIBUTE, cookieValue);
 	}
 
 	@Override
