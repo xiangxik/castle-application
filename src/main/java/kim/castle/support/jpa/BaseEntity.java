@@ -3,6 +3,7 @@ package kim.castle.support.jpa;
 import java.io.Serializable;
 
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Transient;
@@ -16,7 +17,7 @@ import org.springframework.util.ClassUtils;
 public class BaseEntity<PK extends Serializable> implements Persistable<PK> {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private @Nullable PK id;
 
 	@Nullable
