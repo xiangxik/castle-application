@@ -23,6 +23,8 @@ public class UserApi {
 	@ApiOperation(value = "用户列表", notes = "分页数据")
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	public Page<User> doPage(Predicate predicate, Pageable pageable) {
+		int i = 1/0;
+		System.out.println("ccc"+i);
 		return userService.findAll(predicate, pageable);
 	}
 
