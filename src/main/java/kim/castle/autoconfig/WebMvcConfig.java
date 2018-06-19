@@ -18,27 +18,9 @@ import org.springframework.web.servlet.mvc.support.DefaultHandlerExceptionResolv
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 
-	@Override
-	public void addViewControllers(ViewControllerRegistry registry) {
-		registry.addViewController("/login").setViewName("/login");
-	}
-
-	@Override
-	public void configureHandlerExceptionResolvers(List<HandlerExceptionResolver> resolvers) {
-		resolvers.add(new DefaultHandlerExceptionResolver() {
-			@Override
-			protected ModelAndView doResolveException(HttpServletRequest request, HttpServletResponse response,
-					Object handler, Exception ex) {
-				ModelAndView modelAndView = super.doResolveException(request, response, handler, ex);
-				if (modelAndView == null) {
-					modelAndView = new ModelAndView();
-				}
-				modelAndView.addObject("status", HttpStatus.resolve(response.getStatus()));
-				modelAndView.setViewName("exception");
-				modelAndView.addObject("ex", ex);
-				return modelAndView;
-			}
-		});
-	}
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/login").setViewName("/login");
+    }
 
 }
