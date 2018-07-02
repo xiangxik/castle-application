@@ -24,10 +24,8 @@ spring:
         enabled: true
   thymeleaf:
     encoding: UTF-8
-    content-type: text/html
+    servlet:
+      content-type: text/html
     cache: false
   messages:
     basename: default
-security:
-  basic:
-    enabled: false
