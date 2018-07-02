@@ -9,8 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import kim.castle.busi.user.User;
-import kim.castle.busi.user.UserRepository;
+import kim.castle.business.user.User;
+import kim.castle.business.user.UserRepository;
 
 public class DefaultDetailsService implements UserDetailsService {
 

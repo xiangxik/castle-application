@@ -1,30 +1,28 @@
-package kim.castle.api;
+package kim.castle.web.console;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.querydsl.core.types.Predicate;
 
-import io.swagger.annotations.ApiOperation;
-import kim.castle.busi.user.User;
-import kim.castle.busi.user.UserService;
+import kim.castle.business.user.User;
+import kim.castle.business.user.UserService;
 
-@RestController
-@RequestMapping("/api/user")
-public class UserApi {
+@Controller
+@RequestMapping("/user")
+public class UserController {
 
 	@Autowired
 	private UserService userService;
 
-	@ApiOperation(value = "用户列表", notes = "分页数据")
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	@ResponseBody
 	public Page<User> doPage(Predicate predicate, Pageable pageable) {
-		int i = 1/0;
-		System.out.println("ccc"+i);
 		return userService.findAll(predicate, pageable);
 	}
 

@@ -1,12 +1,12 @@
-package kim.castle.busi;
+package kim.castle.business;
 
 import org.springframework.beans.factory.SmartInitializingSingleton;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
-import kim.castle.busi.user.User;
-import kim.castle.busi.user.UserRepository;
+import kim.castle.business.user.User;
+import kim.castle.business.user.UserRepository;
 
 @Component
 public class DataInitializer implements SmartInitializingSingleton {

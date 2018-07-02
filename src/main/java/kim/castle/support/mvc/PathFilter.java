@@ -1,4 +1,4 @@
-package kim.castle.support.json;
+package kim.castle.support.mvc;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,4 +1,4 @@
-package kim.castle.autoconfig;
+package kim.castle.support.json;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,11 +14,6 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import ch.mfrey.jackson.antpathfilter.AntPathFilterMixin;
 import kim.castle.support.data.Node;
 import kim.castle.support.data.Tree;
-import kim.castle.support.json.JpaModule;
-import kim.castle.support.json.NodeSerializer;
-import kim.castle.support.json.ObjectErrorSerializer;
-import kim.castle.support.json.PageSerializer;
-import kim.castle.support.json.TreeSerializer;
 
 @Configuration
 public class JsonConfig {

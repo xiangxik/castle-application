@@ -1,4 +1,4 @@
-package kim.castle.busi.user;
+package kim.castle.business.user;
 
 import javax.persistence.Entity;
 

@@ -19,13 +19,17 @@ import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider;
 import com.google.common.base.Strings;
 
 import ch.mfrey.jackson.antpathfilter.AntPathPropertyFilter;
-import kim.castle.support.data.DataWrapper;
 import kim.castle.support.data.Tree;
-import kim.castle.support.json.PathFilter;
 
 @ControllerAdvice
 @Order(value = Ordered.LOWEST_PRECEDENCE)
-public class PathFilterResponseBodyAdvice extends AbstractMappingJacksonResponseBodyAdvice {
+public class PathFilterHandler extends AbstractMappingJacksonResponseBodyAdvice {
+
+	private AntPathPropertyFilter FULL_PROPERTY_FILTER = new AntPathPropertyFilter(
+			new String[] { "*", "*.*", "*.*.id", "*.*.name" });
+
+	private AntPathPropertyFilter SIMPLE_PROPERTY_FILTER = new AntPathPropertyFilter(
+			new String[] { "*", "*.id", "*.name" });
 
 	@Override
 	protected void beforeBodyWriteInternal(MappingJacksonValue bodyContainer, MediaType contentType,
@@ -33,14 +37,9 @@ public class PathFilterResponseBodyAdvice extends AbstractMappingJacksonResponse
 
 		Object value = bodyContainer.getValue();
 
-		if (returnType.getDeclaringClass().isAssignableFrom(DataWrapper.class)) {
-			bodyContainer.setValue(JsonResponseResult.success(value));
-			return;
-		}
 		if (value != null) {
 			HttpServletRequest httpRequest = ((ServletServerHttpRequest) request).getServletRequest();
 
-			// antpathfilter
 			FilterProvider filterProvider = null;
 
 			String pathFilter = returnType.hasMethodAnnotation(PathFilter.class)
@@ -51,21 +50,16 @@ public class PathFilterResponseBodyAdvice extends AbstractMappingJacksonResponse
 						new AntPathPropertyFilter(pathFilter.split(",")));
 			} else {
 				if (value instanceof Tree) {
-					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter", new AntPathPropertyFilter(
-							new String[] { "*", "*.*", "*.*.id", "*.*.name", "*.*.title", "*.*.fullName" }));
+					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter", FULL_PROPERTY_FILTER);
 				} else if (value instanceof Page) {
-					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter", new AntPathPropertyFilter(
-							new String[] { "*", "*.*", "*.*.id", "*.*.name", "*.*.title", "*.*.fullName" }));
+					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter", FULL_PROPERTY_FILTER);
 				} else {
-					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter",
-							new AntPathPropertyFilter(new String[] { "*", "*.id", "*.name", "*.title", "*.fullName" }));
+					filterProvider = new SimpleFilterProvider().addFilter("antPathFilter", SIMPLE_PROPERTY_FILTER);
 				}
 			}
 
 			bodyContainer.setFilters(filterProvider);
 		}
-
-		// bodyContainer.setFilters(filters);
 
 	}
 

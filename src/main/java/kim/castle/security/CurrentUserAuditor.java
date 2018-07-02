@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
-import kim.castle.busi.user.User;
+import kim.castle.business.user.User;
 import kim.castle.security.DefaultDetailsService.CurrentUserDetails;
 
 @Component
