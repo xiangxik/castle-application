@@ -1,6 +1,10 @@
 castle:
   name: castle
   version: V3.0
+  
+logging:
+  level:
+    root: WARN
 
 server:
   port: 8080
