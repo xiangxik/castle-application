@@ -19,6 +19,11 @@ public class UserController {
 
 	@Autowired
 	private UserService userService;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	public String get() {
+		return "/console/user";
+	}
 
 	@RequestMapping(value = "/page", method = RequestMethod.GET)
 	@ResponseBody
