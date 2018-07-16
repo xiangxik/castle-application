@@ -26,6 +26,7 @@ public class DataInitializer implements SmartInitializingSingleton {
 			user.setName("管理员");
 			userRepository.save(user);
 		}
+
 	}
 
 }

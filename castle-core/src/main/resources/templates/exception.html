@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<style th:replace="/fragments :: head('首页')"></style>
+<style th:replace="/fragments :: head('错误页面')"></style>
 </head>
 <body class="hold-transition skin-blue sidebar-mini fixed">
 	<div class="wrapper">
@@ -12,15 +12,15 @@
 		<div class="content-wrapper">
 			<section class="content-header">
 				<h1>
-					我的工作台 <small>首页</small>
+					错误信息 <small>该页面显示当前服务器返回的错误信息</small>
 				</h1>
 				<ol class="breadcrumb">
 					<li><a href="#"><i class="fa fa-dashboard"></i> 首页</a></li>
-					<li class="active">我的工作台</li>
+					<li class="active">错误信息</li>
 				</ol>
 			</section>
 
-			<section class="content"></section>
+			<section class="content" th:text="${ex}"></section>
 
 		</div>
 

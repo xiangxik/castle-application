@@ -22,10 +22,10 @@ public class UserController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String get() {
-		return "/console/user";
+		return "/user";
 	}
 
-	@RequestMapping(value = "/page", method = RequestMethod.GET)
+	@RequestMapping(value = "/page", method = RequestMethod.POST)
 	@ResponseBody
 	public Page<User> doPage(Predicate predicate, Pageable pageable) {
 		return userService.findAll(predicate, pageable);
