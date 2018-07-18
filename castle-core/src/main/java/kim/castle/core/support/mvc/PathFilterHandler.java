@@ -35,6 +35,8 @@ public class PathFilterHandler extends AbstractMappingJacksonResponseBodyAdvice 
 	protected void beforeBodyWriteInternal(MappingJacksonValue bodyContainer, MediaType contentType,
 			MethodParameter returnType, ServerHttpRequest request, ServerHttpResponse response) {
 
+//		Class<?> returnClass = ((Method)returnType.getExecutable()).getReturnType();
+
 		Object value = bodyContainer.getValue();
 
 		if (value != null) {

@@ -24,7 +24,7 @@ spring:
     password: Stream123
     type: com.zaxxer.hikari.HikariDataSource
     hikari:
-      maximum-pool-size: 50
+      maximum-pool-size: 20
       pool-name: blah
   data:
     jpa:

@@ -24,14 +24,13 @@
 
 				<div class="mailbox-controls">
 					<div class="btn-group btn-group-sm">
-						<a class="btn btn-primary" href="#/page/admin/add"> <i class="fa fa-plus"></i> 添加
+						<a class="btn btn-primary" th:href="@{/user/add}"> <i class="fa fa-plus"></i> 添加
 						</a>
-						<button aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"
-							type="button">
+						<button aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" class="btn btn-primary dropdown-toggle" type="button">
 							批量 <span class="fa fa-caret-down"></span>
 						</button>
 						<ul class="dropdown-menu">
-							<li><a href="javascript:;" id="delete-button"> <i class="glyphicon glyphicon-remove"></i> 删除
+							<li><a href="javascript:;" id="multi-delete-button"> <i class="glyphicon glyphicon-remove"></i> 删除
 							</a></li>
 						</ul>
 					</div>
@@ -49,12 +48,12 @@
 					<form id="search-form" class="form-search form-inline">
 						<div class="box-body">
 							<div class="form-group">
-								<label for="search-username" class="control-label">账号</label> <input class="form-control" id="search-username"
-									placeholder="请输入账号" name="username" type="text">
+								<label for="search-username" class="control-label">账号</label> <input class="form-control" id="search-username" placeholder="请输入账号"
+									name="username" type="text">
 							</div>
 							<div class="form-group">
-								<label for="search-name" class="control-label">姓名</label> <input class="form-control" id="search-name"
-									placeholder="请输入姓名" name="name" type="text">
+								<label for="search-name" class="control-label">姓名</label> <input class="form-control" id="search-name" placeholder="请输入姓名" name="name"
+									type="text">
 							</div>
 							<button type="submit" class="btn btn-primary btn-sm" id="search-button">
 								<i class="fa fa-search"></i> 搜索
@@ -68,12 +67,11 @@
 						<table id="grid-main" class="table table-hover">
 							<thead>
 								<tr>
-									<th data-column-id="id" data-type="string" data-identifier="true" data-visible="false">ID</th>
+									<th data-column-id="id" data-identifier="true" data-visible="false">ID</th>
 									<th data-column-id="username">账号</th>
 									<th data-column-id="name">姓名</th>
-									<th data-formatter="businessType" data-css-class="hidden-xs" data-header-css-class="hidden-xs">角色</th>
-									<th data-formatter="commands" data-css-class="command-column" data-width="120px" data-sortable="false"
-										data-align="center" data-header-align="center">操作</th>
+									<th data-formatter="commands" data-css-class="command-column" data-width="120px" data-sortable="false" data-align="center"
+										data-header-align="center">操作</th>
 								</tr>
 							</thead>
 						</table>
@@ -92,19 +90,6 @@
 		$(function() {
 			'use strict'
 
-			var parseQueryString = function(arr_url) {
-				var reg_para = /([^&=]+)=([\w\W]*?)(&|$|#)/g, ret = {};
-				if (arr_url) {
-					var str_para = arr_url, result;
-					while ((result = reg_para.exec(str_para)) != null) {
-						if (result[2]) {
-							ret[result[1]] = decodeURIComponent(result[2]);
-						}
-					}
-				}
-				return ret;
-			};
-
 			var $table = $("#grid-main");
 			$table
 					.bootgrid({
@@ -115,15 +100,66 @@
 						},
 						formatters : {
 							"commands" : function(column, row) {
-								var link_edit = "<a href=\""+base+"/user/edit/"+row.id+"\"><i class=\"md-icon material-icons\">&#xE254;</i></a>";
-								var link_delete = "<a href=\"javascript:;\"><i class=\"md-icon material-icons\">&#xE872;</i></a>";
-								return link_edit + link_delete;
+								return "\
+								<div class=\"btn-group btn-group-sm\" data-row-id=\""+row.id+"\">\
+									<a class=\"btn btn-primary\" href=\"#/page/admin/edit/"+row.id+"\">\
+										<i class=\"glyphicon glyphicon-edit\"></i>\
+									</a>\
+									<a aria-expanded=\"false\" aria-haspopup=\"true\" data-toggle=\"dropdown\" \
+										class=\"btn btn-primary dropdown-toggle\" type=\"button\">\
+										<i class=\"fa fa-cog\"></i>\
+										<span class=\"ion-arrow-down-b\"></span>\
+									</a>\
+									<ul class=\"dropdown-menu pull-right\">\
+										<li><a href=\"javascript:;\" class=\"command-delete\"><i class=\"glyphicon glyphicon-remove\"></i> 移除</a></li>\
+									</ul>\
+								</div>";
 							}
 						}
 					});
+			$table.on("loaded.rs.jquery.bootgrid", function() {
+				var $this = $(this);
+				$this.find(".dropdown-toggle").dropdown();
+				$this.find(".command-delete").on(
+						"click",
+						function(e) {
+							var entity_id = $(this).closest(".btn-group").data(
+									"row-id");
+							deleteRow($table, [ entity_id ]);
+						});
+			});
+
+			var deleteRow = function(grid, ids) {
+				confirmx("确认信息", "确定要删除吗？", function() {
+					$.post(base + "/user/delete", {
+						ids : ids
+					}, function(resp) {
+						if (resp.success) {
+							alertx("操作成功");
+							grid.bootgrid("reload")
+						} else {
+							alertx(resp.msg);
+						}
+					}, "json");
+				});
+			};
+
+			$("#multi-delete-button").on("click", function() {
+				actionWithSelectedRows($table, deleteRow, "请至少选择一个用户");
+			});
+
 			$("#search-button").on("click", function() {
 				$table.bootgrid("reload");
 				return false;
+			});
+
+			$("#refresh-button").on("click", function() {
+				$table.bootgrid("reload");
+				return false;
+			});
+
+			$("#open-search-button").on("click", function() {
+				$("#search-panel").toggle('fast')
 			});
 		});
 	</script>

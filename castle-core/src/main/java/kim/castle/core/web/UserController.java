@@ -6,6 +6,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.querydsl.core.types.Predicate;
@@ -29,6 +30,14 @@ public class UserController {
 	@ResponseBody
 	public Page<User> doPage(Predicate predicate, Pageable pageable) {
 		return userService.findAll(predicate, pageable);
+	}
+
+	@RequestMapping(value = "/delete", method = RequestMethod.POST)
+	@ResponseBody
+	public void doBatchDelete(@RequestParam(value = "ids[]") User[] users) {
+		for (User user : users) {
+			userService.delete(user);
+		}
 	}
 
 }
