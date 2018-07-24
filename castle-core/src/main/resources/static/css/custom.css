@@ -127,6 +127,16 @@
 	padding: 2px;
 }
 
+.parsley-error {
+	background: #fecccc;
+}
+
+.parsley-errors-list {
+	margin: 0;
+	color: red;
+	float: left;
+}
+
 /* .content .select2-container--default .select2-selection--single,
 	.content .select2-selection .select2-selection--single {
 	border: 1px solid #d2d6de;

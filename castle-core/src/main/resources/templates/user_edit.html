@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<style th:replace="/fragments :: head('用户')"></style>
+</head>
+<body class="hold-transition skin-blue sidebar-mini fixed">
+	<div class="wrapper">
+
+		<div th:replace="/fragments :: content-header"></div>
+		<div th:replace="/fragments :: content-sidebar"></div>
+
+		<div class="content-wrapper">
+			<section class="content-header">
+				<h1>
+					用户列表 <small>列出系统的用户</small>
+				</h1>
+				<ol class="breadcrumb">
+					<li><a href="#"><i class="fa fa-dashboard"></i> 用户管理</a></li>
+					<li class="active" th:text="(${user.new}?'新建':'编辑')+'用户'"></li>
+				</ol>
+			</section>
+
+			<section class="content">
+
+				<div class="box box-primary">
+					<div class="box-header with-border">
+						<h3 class="box-title">请输入用户信息</h3>
+					</div>
+					<form id="main-form" data-parsley-validate class="form-horizontal" th:action="@{/user/save}" method="post" th:object="${user}">
+						<input type="hidden" name="id" th:value="*{id}" />
+						<div class="box-body">
+							<div class="form-group">
+								<label for="input-name" class="col-sm-2 control-label">名称<i class="required-tip">*</i></label>
+
+								<div class="col-sm-8">
+									<input class="form-control" id="input-name" placeholder="请输入名称" name="name" th:value="*{name}" type="text" required>
+								</div>
+							</div>
+
+						</div>
+						<div class="box-footer">
+							<button type="button" class="btn btn-default" onclick="location.href='#/page/deliveryCenter'">返回列表</button>
+							<button type="submit" class="btn btn-success pull-right">保存</button>
+						</div>
+					</form>
+				</div>
+
+
+			</section>
+
+		</div>
+
+		<div th:replace="/fragments :: content-footer"></div>
+	</div>
+
+	<div th:replace="/fragments :: javascript"></div>
+	<script type="text/javascript">
+		$(function() {
+			'use strict'
+			var $form = $('#main-form');
+			$form.parsley().on(
+					'form:submit',
+					function() {
+						$.post($form.attr('action'), $form.serialize(),
+								function(action) {
+									handleAction(action);
+								}, "json");
+						return false;
+					});
+		});
+	</script>
+</body>
+</html>

@@ -28,6 +28,7 @@ public class User extends DataEntity<User, Long> {
 	private String name;
 
 	@Size(min = 2, max = 20)
+	@NotNull
 	@Pattern(regexp = USERNAME_PATTERN)
 	@Column(nullable = false, unique = true, length = 50, updatable = false)
 	private String username;

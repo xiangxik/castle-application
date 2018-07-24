@@ -47,3 +47,19 @@ var actionWithSelectedRows = function(grid, action, message) {
 		alertx(message);
 	}
 }
+
+var handleAction = function(action) {
+	if (action.type == 'composite') {
+		$.each(action.data, handleAction);
+	} else {
+		if (action.type == 'alert') {
+			alertx(action.data);
+		} else if (action.type == 'redirect') {
+			location.href = action.data;
+		} else {
+			if(action.code == 2) {
+				alertx("验证错误");
+			}
+		}
+	}
+}
