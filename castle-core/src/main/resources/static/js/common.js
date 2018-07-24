@@ -48,10 +48,16 @@ var actionWithSelectedRows = function(grid, action, message) {
 	}
 }
 
-var handleAction = function(action) {
+var handleAction = function(action, opts) {
 	if (action.type == 'composite') {
-		$.each(action.data, handleAction);
+		$.each(action.data, function(item, i) {
+			handleAction(item, opts)
+		});
 	} else {
+		if(opts.success) {
+			opts.success(action);
+		}
+		
 		if (action.type == 'alert') {
 			alertx(action.data);
 		} else if (action.type == 'redirect') {

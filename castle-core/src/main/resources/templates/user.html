@@ -48,12 +48,10 @@
 					<form id="search-form" class="form-search form-inline">
 						<div class="box-body">
 							<div class="form-group">
-								<label for="search-username" class="control-label">账号</label> <input class="form-control" id="search-username" placeholder="请输入账号"
-									name="username" type="text">
+								<label for="search-username" class="control-label">账号</label> <input class="form-control" id="search-username" placeholder="请输入账号" name="username" type="text">
 							</div>
 							<div class="form-group">
-								<label for="search-name" class="control-label">姓名</label> <input class="form-control" id="search-name" placeholder="请输入姓名" name="name"
-									type="text">
+								<label for="search-name" class="control-label">姓名</label> <input class="form-control" id="search-name" placeholder="请输入姓名" name="name" type="text">
 							</div>
 							<button type="submit" class="btn btn-primary btn-sm" id="search-button">
 								<i class="fa fa-search"></i> 搜索
@@ -70,8 +68,7 @@
 									<th data-column-id="id" data-identifier="true" data-visible="false">ID</th>
 									<th data-column-id="username">账号</th>
 									<th data-column-id="name">姓名</th>
-									<th data-formatter="commands" data-css-class="command-column" data-width="120px" data-sortable="false" data-align="center"
-										data-header-align="center">操作</th>
+									<th data-formatter="commands" data-css-class="command-column" data-width="120px" data-sortable="false" data-align="center" data-header-align="center">操作</th>
 								</tr>
 							</thead>
 						</table>
@@ -133,13 +130,12 @@
 				confirmx("确认信息", "确定要删除吗？", function() {
 					$.post(base + "/user/delete", {
 						ids : ids
-					}, function(resp) {
-						if (resp.success) {
-							alertx("操作成功");
-							grid.bootgrid("reload")
-						} else {
-							alertx(resp.msg);
-						}
+					}, function(action) {
+						handleAction(action, {
+							success : function(item) {
+								grid.bootgrid("reload")
+							}
+						});
 					}, "json");
 				});
 			};
